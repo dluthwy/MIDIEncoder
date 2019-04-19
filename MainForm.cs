@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using System.IO.Ports;
 
 namespace MidiEncoder {
     public partial class MainForm : Form
@@ -106,8 +107,23 @@ namespace MidiEncoder {
             //}
         }
 
-        private void MainForm_Load(object sender, EventArgs e) {
+        //检测串口
+        private void checkSerialPort() {
+            try {
+                cbxSerialName.Items.Clear();
+                string[] str = SerialPort.GetPortNames();
+                for (int i = 0; i < str.Length;i++) {
+                    cbxSerialName.Items.Add(str[i]);
+                }
+                cbxSerialName.SelectedIndex = 0;
+                statusLabel1.Text = "获取串口信息成功";
+            } catch (Exception) {
+                statusLabel1.Text = "无法获取可用串口信息";
+            }
+        }
 
+        private void MainForm_Load(object sender, EventArgs e) {
+            checkSerialPort();
         }
     }
 }
