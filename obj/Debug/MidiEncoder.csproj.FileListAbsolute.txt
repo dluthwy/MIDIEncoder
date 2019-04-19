@@ -1,0 +1,11 @@
+D:\Documents_HWY\C#_Projects\C#_Project\MidiEncoder\bin\Debug\MidiEncoder.exe
+D:\Documents_HWY\C#_Projects\C#_Project\MidiEncoder\bin\Debug\MidiEncoder.pdb
+D:\Documents_HWY\C#_Projects\C#_Project\MidiEncoder\bin\Debug\NAudio.dll
+D:\Documents_HWY\C#_Projects\C#_Project\MidiEncoder\obj\Debug\MidiEncoder.csprojAssemblyReference.cache
+D:\Documents_HWY\C#_Projects\C#_Project\MidiEncoder\obj\Debug\MidiEncoder.MainForm.resources
+D:\Documents_HWY\C#_Projects\C#_Project\MidiEncoder\obj\Debug\MidiEncoder.Properties.Resources.resources
+D:\Documents_HWY\C#_Projects\C#_Project\MidiEncoder\obj\Debug\MidiEncoder.csproj.GenerateResource.cache
+D:\Documents_HWY\C#_Projects\C#_Project\MidiEncoder\obj\Debug\MidiEncoder.csproj.CoreCompileInputs.cache
+D:\Documents_HWY\C#_Projects\C#_Project\MidiEncoder\obj\Debug\MidiEncoder.csproj.CopyComplete
+D:\Documents_HWY\C#_Projects\C#_Project\MidiEncoder\obj\Debug\MidiEncoder.exe
+D:\Documents_HWY\C#_Projects\C#_Project\MidiEncoder\obj\Debug\MidiEncoder.pdb
