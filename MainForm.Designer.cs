@@ -28,9 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.OpenFile = new System.Windows.Forms.Button();
             this.rtbLog = new System.Windows.Forms.RichTextBox();
-            this.btnPlay = new System.Windows.Forms.Button();
+            this.btnSend = new System.Windows.Forms.Button();
             this.panelSetting = new System.Windows.Forms.Panel();
             this.btnSerialPort = new System.Windows.Forms.Button();
             this.cbxStopBit = new System.Windows.Forms.ComboBox();
@@ -46,25 +47,27 @@
             this.rtbSend = new System.Windows.Forms.RichTextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label9 = new System.Windows.Forms.Label();
             this.btnClearRec = new System.Windows.Forms.Button();
             this.rabRecHex = new System.Windows.Forms.RadioButton();
             this.rabRecAscii = new System.Windows.Forms.RadioButton();
             this.btnClearSend = new System.Windows.Forms.Button();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.rabSendHex = new System.Windows.Forms.RadioButton();
+            this.rabSendAscii = new System.Windows.Forms.RadioButton();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label10 = new System.Windows.Forms.Label();
             this.rtbReceive = new System.Windows.Forms.RichTextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.listSong = new System.Windows.Forms.ListView();
+            this.listMusicView = new System.Windows.Forms.ListView();
             this.colNum = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
+            this.serialPort = new System.IO.Ports.SerialPort(this.components);
+            this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.panelSetting.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -75,7 +78,7 @@
             // 
             this.OpenFile.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.OpenFile.Location = new System.Drawing.Point(697, 381);
-            this.OpenFile.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.OpenFile.Margin = new System.Windows.Forms.Padding(2);
             this.OpenFile.Name = "OpenFile";
             this.OpenFile.Size = new System.Drawing.Size(83, 27);
             this.OpenFile.TabIndex = 0;
@@ -86,23 +89,24 @@
             // rtbLog
             // 
             this.rtbLog.Location = new System.Drawing.Point(549, 31);
-            this.rtbLog.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rtbLog.Margin = new System.Windows.Forms.Padding(2);
             this.rtbLog.Name = "rtbLog";
             this.rtbLog.Size = new System.Drawing.Size(233, 167);
             this.rtbLog.TabIndex = 1;
             this.rtbLog.Text = "";
             // 
-            // btnPlay
+            // btnSend
             // 
-            this.btnPlay.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnPlay.Location = new System.Drawing.Point(549, 381);
-            this.btnPlay.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.btnPlay.Name = "btnPlay";
-            this.btnPlay.Size = new System.Drawing.Size(83, 27);
-            this.btnPlay.TabIndex = 2;
-            this.btnPlay.Text = "发送";
-            this.btnPlay.UseVisualStyleBackColor = true;
-            this.btnPlay.Click += new System.EventHandler(this.BtnPlay_Click);
+            this.btnSend.Enabled = false;
+            this.btnSend.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnSend.Location = new System.Drawing.Point(549, 381);
+            this.btnSend.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSend.Name = "btnSend";
+            this.btnSend.Size = new System.Drawing.Size(83, 27);
+            this.btnSend.TabIndex = 2;
+            this.btnSend.Text = "发送";
+            this.btnSend.UseVisualStyleBackColor = true;
+            this.btnSend.Click += new System.EventHandler(this.BtnSend_Click);
             // 
             // panelSetting
             // 
@@ -119,7 +123,7 @@
             this.panelSetting.Controls.Add(this.cbxSerialName);
             this.panelSetting.Controls.Add(this.label1);
             this.panelSetting.Location = new System.Drawing.Point(8, 8);
-            this.panelSetting.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panelSetting.Margin = new System.Windows.Forms.Padding(2);
             this.panelSetting.Name = "panelSetting";
             this.panelSetting.Size = new System.Drawing.Size(194, 228);
             this.panelSetting.TabIndex = 3;
@@ -129,20 +133,25 @@
             this.btnSerialPort.BackColor = System.Drawing.Color.Green;
             this.btnSerialPort.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnSerialPort.Location = new System.Drawing.Point(18, 188);
-            this.btnSerialPort.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnSerialPort.Margin = new System.Windows.Forms.Padding(2);
             this.btnSerialPort.Name = "btnSerialPort";
             this.btnSerialPort.Size = new System.Drawing.Size(158, 36);
             this.btnSerialPort.TabIndex = 4;
             this.btnSerialPort.Text = "打开串口";
             this.btnSerialPort.UseVisualStyleBackColor = false;
+            this.btnSerialPort.Click += new System.EventHandler(this.BtnSerialPort_Click);
             // 
             // cbxStopBit
             // 
             this.cbxStopBit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxStopBit.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cbxStopBit.FormattingEnabled = true;
+            this.cbxStopBit.Items.AddRange(new object[] {
+            "1",
+            "1.5",
+            "2"});
             this.cbxStopBit.Location = new System.Drawing.Point(49, 151);
-            this.cbxStopBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbxStopBit.Margin = new System.Windows.Forms.Padding(2);
             this.cbxStopBit.Name = "cbxStopBit";
             this.cbxStopBit.Size = new System.Drawing.Size(140, 28);
             this.cbxStopBit.TabIndex = 13;
@@ -163,8 +172,12 @@
             this.cbxCheckBit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxCheckBit.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cbxCheckBit.FormattingEnabled = true;
+            this.cbxCheckBit.Items.AddRange(new object[] {
+            "None",
+            "Odd",
+            "Even"});
             this.cbxCheckBit.Location = new System.Drawing.Point(49, 115);
-            this.cbxCheckBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbxCheckBit.Margin = new System.Windows.Forms.Padding(2);
             this.cbxCheckBit.Name = "cbxCheckBit";
             this.cbxCheckBit.Size = new System.Drawing.Size(140, 28);
             this.cbxCheckBit.TabIndex = 11;
@@ -185,8 +198,12 @@
             this.cbxDataBit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxDataBit.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cbxDataBit.FormattingEnabled = true;
+            this.cbxDataBit.Items.AddRange(new object[] {
+            "8",
+            "7",
+            "6"});
             this.cbxDataBit.Location = new System.Drawing.Point(49, 78);
-            this.cbxDataBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbxDataBit.Margin = new System.Windows.Forms.Padding(2);
             this.cbxDataBit.Name = "cbxDataBit";
             this.cbxDataBit.Size = new System.Drawing.Size(140, 28);
             this.cbxDataBit.TabIndex = 9;
@@ -207,8 +224,14 @@
             this.cbxBaud.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxBaud.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cbxBaud.FormattingEnabled = true;
+            this.cbxBaud.Items.AddRange(new object[] {
+            "2400",
+            "4800",
+            "9600",
+            "19200",
+            "38400"});
             this.cbxBaud.Location = new System.Drawing.Point(49, 42);
-            this.cbxBaud.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbxBaud.Margin = new System.Windows.Forms.Padding(2);
             this.cbxBaud.Name = "cbxBaud";
             this.cbxBaud.Size = new System.Drawing.Size(140, 28);
             this.cbxBaud.TabIndex = 7;
@@ -230,7 +253,7 @@
             this.cbxSerialName.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cbxSerialName.FormattingEnabled = true;
             this.cbxSerialName.Location = new System.Drawing.Point(49, 5);
-            this.cbxSerialName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbxSerialName.Margin = new System.Windows.Forms.Padding(2);
             this.cbxSerialName.Name = "cbxSerialName";
             this.cbxSerialName.Size = new System.Drawing.Size(140, 28);
             this.cbxSerialName.TabIndex = 5;
@@ -249,7 +272,7 @@
             // rtbSend
             // 
             this.rtbSend.Location = new System.Drawing.Point(211, 301);
-            this.rtbSend.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rtbSend.Margin = new System.Windows.Forms.Padding(2);
             this.rtbSend.Name = "rtbSend";
             this.rtbSend.Size = new System.Drawing.Size(325, 108);
             this.rtbSend.TabIndex = 4;
@@ -274,98 +297,126 @@
             this.panel1.Controls.Add(this.rabRecHex);
             this.panel1.Controls.Add(this.rabRecAscii);
             this.panel1.Location = new System.Drawing.Point(8, 246);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(194, 79);
             this.panel1.TabIndex = 16;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label9.Location = new System.Drawing.Point(14, 14);
+            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(44, 17);
+            this.label9.TabIndex = 14;
+            this.label9.Text = "接受码";
             // 
             // btnClearRec
             // 
             this.btnClearRec.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnClearRec.Location = new System.Drawing.Point(17, 43);
-            this.btnClearRec.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnClearRec.Margin = new System.Windows.Forms.Padding(2);
             this.btnClearRec.Name = "btnClearRec";
             this.btnClearRec.Size = new System.Drawing.Size(159, 23);
             this.btnClearRec.TabIndex = 15;
             this.btnClearRec.Text = "清空接收";
             this.btnClearRec.UseVisualStyleBackColor = true;
+            this.btnClearRec.Click += new System.EventHandler(this.BtnClearRec_Click);
             // 
             // rabRecHex
             // 
             this.rabRecHex.AutoSize = true;
+            this.rabRecHex.Checked = true;
             this.rabRecHex.Location = new System.Drawing.Point(135, 15);
-            this.rabRecHex.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rabRecHex.Margin = new System.Windows.Forms.Padding(2);
             this.rabRecHex.Name = "rabRecHex";
             this.rabRecHex.Size = new System.Drawing.Size(41, 16);
             this.rabRecHex.TabIndex = 18;
             this.rabRecHex.TabStop = true;
             this.rabRecHex.Text = "HEX";
             this.rabRecHex.UseVisualStyleBackColor = true;
+            this.rabRecHex.CheckedChanged += new System.EventHandler(this.RabRecHex_CheckedChanged);
             // 
             // rabRecAscii
             // 
             this.rabRecAscii.AutoSize = true;
             this.rabRecAscii.Location = new System.Drawing.Point(78, 15);
-            this.rabRecAscii.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rabRecAscii.Margin = new System.Windows.Forms.Padding(2);
             this.rabRecAscii.Name = "rabRecAscii";
             this.rabRecAscii.Size = new System.Drawing.Size(53, 16);
             this.rabRecAscii.TabIndex = 17;
-            this.rabRecAscii.TabStop = true;
             this.rabRecAscii.Text = "ASCII";
             this.rabRecAscii.UseVisualStyleBackColor = true;
+            this.rabRecAscii.CheckedChanged += new System.EventHandler(this.RabRecAscii_CheckedChanged);
             // 
             // btnClearSend
             // 
             this.btnClearSend.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnClearSend.Location = new System.Drawing.Point(18, 42);
-            this.btnClearSend.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnClearSend.Margin = new System.Windows.Forms.Padding(2);
             this.btnClearSend.Name = "btnClearSend";
             this.btnClearSend.Size = new System.Drawing.Size(158, 23);
             this.btnClearSend.TabIndex = 19;
             this.btnClearSend.Text = "清空发送";
             this.btnClearSend.UseVisualStyleBackColor = true;
+            this.btnClearSend.Click += new System.EventHandler(this.BtnClearSend_Click);
             // 
-            // radioButton1
+            // rabSendHex
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(135, 12);
-            this.radioButton1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(41, 16);
-            this.radioButton1.TabIndex = 21;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "HEX";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.rabSendHex.AutoSize = true;
+            this.rabSendHex.Checked = true;
+            this.rabSendHex.Location = new System.Drawing.Point(135, 12);
+            this.rabSendHex.Margin = new System.Windows.Forms.Padding(2);
+            this.rabSendHex.Name = "rabSendHex";
+            this.rabSendHex.Size = new System.Drawing.Size(41, 16);
+            this.rabSendHex.TabIndex = 21;
+            this.rabSendHex.TabStop = true;
+            this.rabSendHex.Text = "HEX";
+            this.rabSendHex.UseVisualStyleBackColor = true;
+            this.rabSendHex.CheckedChanged += new System.EventHandler(this.RabSendHex_CheckedChanged);
             // 
-            // radioButton2
+            // rabSendAscii
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(78, 12);
-            this.radioButton2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(53, 16);
-            this.radioButton2.TabIndex = 20;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "ASCII";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.rabSendAscii.AutoSize = true;
+            this.rabSendAscii.Location = new System.Drawing.Point(78, 12);
+            this.rabSendAscii.Margin = new System.Windows.Forms.Padding(2);
+            this.rabSendAscii.Name = "rabSendAscii";
+            this.rabSendAscii.Size = new System.Drawing.Size(53, 16);
+            this.rabSendAscii.TabIndex = 20;
+            this.rabSendAscii.Text = "ASCII";
+            this.rabSendAscii.UseVisualStyleBackColor = true;
+            this.rabSendAscii.CheckedChanged += new System.EventHandler(this.RabSendAscii_CheckedChanged);
             // 
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel2.Controls.Add(this.label10);
-            this.panel2.Controls.Add(this.radioButton1);
+            this.panel2.Controls.Add(this.rabSendHex);
             this.panel2.Controls.Add(this.btnClearSend);
-            this.panel2.Controls.Add(this.radioButton2);
+            this.panel2.Controls.Add(this.rabSendAscii);
             this.panel2.Location = new System.Drawing.Point(8, 332);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(194, 77);
             this.panel2.TabIndex = 22;
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label10.Location = new System.Drawing.Point(15, 12);
+            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(44, 17);
+            this.label10.TabIndex = 19;
+            this.label10.Text = "发送码";
+            // 
             // rtbReceive
             // 
             this.rtbReceive.Location = new System.Drawing.Point(211, 32);
-            this.rtbReceive.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rtbReceive.Margin = new System.Windows.Forms.Padding(2);
             this.rtbReceive.Name = "rtbReceive";
             this.rtbReceive.Size = new System.Drawing.Size(325, 246);
             this.rtbReceive.TabIndex = 23;
@@ -393,44 +444,42 @@
             this.label8.TabIndex = 25;
             this.label8.Text = "日志";
             // 
-            // listSong
+            // listMusicView
             // 
-            this.listSong.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.listMusicView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colNum,
             this.colName,
             this.colSize,
             this.colStatus});
-            this.listSong.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.listSong.Location = new System.Drawing.Point(549, 213);
-            this.listSong.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.listSong.Name = "listSong";
-            this.listSong.Size = new System.Drawing.Size(233, 159);
-            this.listSong.TabIndex = 26;
-            this.listSong.UseCompatibleStateImageBehavior = false;
-            this.listSong.View = System.Windows.Forms.View.Details;
+            this.listMusicView.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.listMusicView.GridLines = true;
+            this.listMusicView.Location = new System.Drawing.Point(549, 213);
+            this.listMusicView.Margin = new System.Windows.Forms.Padding(2);
+            this.listMusicView.Name = "listMusicView";
+            this.listMusicView.Size = new System.Drawing.Size(233, 159);
+            this.listMusicView.TabIndex = 26;
+            this.listMusicView.UseCompatibleStateImageBehavior = false;
+            this.listMusicView.View = System.Windows.Forms.View.Details;
             // 
             // colNum
             // 
             this.colNum.Tag = "";
             this.colNum.Text = "序号";
-            this.colNum.Width = 50;
+            this.colNum.Width = 38;
             // 
             // colName
             // 
             this.colName.Text = "歌曲名";
-            this.colName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.colName.Width = 116;
+            this.colName.Width = 59;
             // 
             // colSize
             // 
             this.colSize.Text = "大小";
-            this.colSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.colSize.Width = 95;
+            this.colSize.Width = 59;
             // 
             // colStatus
             // 
             this.colStatus.Text = "状态";
-            this.colStatus.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.colStatus.Width = 72;
             // 
             // statusStrip
@@ -451,35 +500,13 @@
             this.statusLabel1.Size = new System.Drawing.Size(131, 17);
             this.statusLabel1.Text = "toolStripStatusLabel1";
             // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label9.Location = new System.Drawing.Point(14, 14);
-            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(44, 17);
-            this.label9.TabIndex = 14;
-            this.label9.Text = "接受码";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label10.Location = new System.Drawing.Point(15, 12);
-            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(44, 17);
-            this.label10.TabIndex = 19;
-            this.label10.Text = "发送码";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(789, 444);
             this.Controls.Add(this.statusStrip);
-            this.Controls.Add(this.listSong);
+            this.Controls.Add(this.listMusicView);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.rtbReceive);
@@ -488,10 +515,10 @@
             this.Controls.Add(this.label6);
             this.Controls.Add(this.rtbSend);
             this.Controls.Add(this.panelSetting);
-            this.Controls.Add(this.btnPlay);
+            this.Controls.Add(this.btnSend);
             this.Controls.Add(this.rtbLog);
             this.Controls.Add(this.OpenFile);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainForm";
             this.Text = "MidiEncoder";
             this.Load += new System.EventHandler(this.MainForm_Load);
@@ -512,7 +539,7 @@
 
         private System.Windows.Forms.Button OpenFile;
         private System.Windows.Forms.RichTextBox rtbLog;
-        private System.Windows.Forms.Button btnPlay;
+        private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.Panel panelSetting;
         private System.Windows.Forms.Button btnSerialPort;
         private System.Windows.Forms.ComboBox cbxStopBit;
@@ -532,13 +559,13 @@
         private System.Windows.Forms.RadioButton rabRecHex;
         private System.Windows.Forms.RadioButton rabRecAscii;
         private System.Windows.Forms.Button btnClearSend;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.RadioButton rabSendHex;
+        private System.Windows.Forms.RadioButton rabSendAscii;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.RichTextBox rtbReceive;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.ListView listSong;
+        private System.Windows.Forms.ListView listMusicView;
         private System.Windows.Forms.ColumnHeader colName;
         private System.Windows.Forms.ColumnHeader colNum;
         private System.Windows.Forms.ColumnHeader colSize;
@@ -547,6 +574,8 @@
         private System.Windows.Forms.ToolStripStatusLabel statusLabel1;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
+        private System.IO.Ports.SerialPort serialPort;
+        private System.IO.Ports.SerialPort serialPort1;
     }
 }
 
