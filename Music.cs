@@ -12,5 +12,9 @@ namespace MidiEncoder {
         public string MusicSize = "0";
         //文件状态
         public string MusicStatus;
+
+        public double AveInterval;
+
+        public double AveNoteLength;
     }
 }

@@ -19,8 +19,6 @@ namespace MidiEncoder {
         public double StartTime;
         //频率
         public double NoteFrequency;
-        //持续周期
-        public int Duration;
 
         public Note(){
             this.NoteName = "unknow";
@@ -29,5 +27,20 @@ namespace MidiEncoder {
             this.NoteNumber = 0;
         }
 
+        //获取频率计数初值
+        public int getFrequencyCN() {
+            double T_us = 12 / 11.0592;
+            int countNum = (int)(65536 - (10 ^ 6) / (2 * this.NoteFrequency * T_us));
+            return countNum;
+        }
+
+        //获取长度计数初值
+        public int getLengthCN(Music music) {
+            int count = 100;
+            double T_us = 12 / 11.0592;
+            double D_us = music.AveInterval / music.AveNoteLength * 4 * this.NoteLength * (10^3);
+            int countNum = (int)(65536 - D_us / T_us / count);
+            return countNum;
+        }
     }
 }

@@ -90,13 +90,26 @@ namespace MidiEncoder {
                                 }
                             }
                             // 归一化长度
-                            foreach (Note note in NoteList) {
-                                note.NoteLength = (int)(note.NoteLength / minLength);
-                            }
+                            //foreach (Note note in NoteList) {
+                            //    note.NoteLength = (int)(note.NoteLength / minLength);
+                            //}
                         }
                         music.NoteList = NoteList;
                         music.MusicSize = NoteList.Count().ToString();
                         music.MusicStatus = "已解码";
+                        //获取乐谱信息
+                        double totalInterval = 0;
+                        int totalLength = 0;
+                        int count = 0;
+                        for(int i = 0;i < NoteList.Count() - 1;i++) {
+                            if(NoteList[i + 1].StartTime != NoteList[i].StartTime) {
+                                totalInterval += NoteList[i + 1].StartTime - NoteList[i].StartTime;
+                                count++;
+                            }
+                            totalLength += NoteList[i].NoteLength;
+                        }
+                        music.AveInterval = totalInterval / count;
+                        music.AveNoteLength = totalLength / NoteList.Count();
                         //加入音乐列表
                         MusicList.Add(music);
                         rtbLog.AppendText(music.MusicName + "解码成功!\n");
@@ -212,10 +225,16 @@ namespace MidiEncoder {
                 } else {
                     comm.StopBits = StopBits.Two;
                 }
+                //串口读取缓冲区大小
+                comm.ReadBufferSize = 1024;
+                //串口发送缓冲区大小
+                comm.WriteBufferSize = 4096;
                 
                 try {
-                    this.comm.Open();
-                    this.btnSerialPort.BackColor = Color.Red;
+                    if(!comm.IsOpen) {
+                        this.comm.Open();
+                        this.btnSerialPort.BackColor = Color.Red;
+                    }
                 } catch(Exception ex) {
                     comm = new SerialPort();
                     MessageBox.Show(ex.Message);
@@ -230,7 +249,15 @@ namespace MidiEncoder {
 
         //串口发送
         private void BtnSend_Click(object sender, EventArgs e) {
-            
+            foreach(Music music in MusicList) {
+                foreach(Note note in music.NoteList) {
+                    if(note.NoteLength != 0) {
+                        int Frequency = (int)note.NoteFrequency;
+                        double Duration = music.AveInterval / music.AveNoteLength * 4 * note.NoteLength;
+                        Console.Beep(Frequency, (int)Math.Ceiling(Duration));
+                    }
+                }
+            }
         }
 
         //串口接收
@@ -256,7 +283,27 @@ namespace MidiEncoder {
                 
                 this.rtbReceive.AppendText(Builder.ToString());
             }));
+        }
 
+        //发送乐谱信息
+        void sendMusicNotes(int musicIndex) {
+            foreach(Note note in MusicList[musicIndex - 1].NoteList) {
+                int NoteFrequencyCN = note.getFrequencyCN();
+                int NoteLengthCNCN = note.getLengthCN(MusicList[musicIndex - 1]);
+            }
+        }
+
+        //处理单片机请求事件
+        void handleMcsRequests(byte command) {
+            if(command == 0x00) {
+                //刷新列表
+            } else if (command >= 0x01 && command <= 0x08) {
+                byte[] byteArray = new byte[1];
+                byteArray[0] = command;
+                //播放对应歌曲
+                int musicIndex = System.BitConverter.ToInt32(byteArray, 0);
+                sendMusicNotes(musicIndex);
+            }
         }
 
         //字节数组转16进制字符串
@@ -264,7 +311,7 @@ namespace MidiEncoder {
             string returnStr = "";
             if (bytes != null) {
                 for (int i = 0; i < bytes.Length; i++) {
-                    returnStr += bytes[i].ToString("X2");
+                    returnStr += bytes[i].ToString("X2") + " ";
                 }
             }
             return returnStr;
