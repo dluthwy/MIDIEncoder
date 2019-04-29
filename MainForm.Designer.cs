@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.OpenFile = new System.Windows.Forms.Button();
             this.rtbLog = new System.Windows.Forms.RichTextBox();
             this.btnSend = new System.Windows.Forms.Button();
@@ -77,10 +78,9 @@
             // OpenFile
             // 
             this.OpenFile.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.OpenFile.Location = new System.Drawing.Point(697, 381);
-            this.OpenFile.Margin = new System.Windows.Forms.Padding(2);
+            this.OpenFile.Location = new System.Drawing.Point(1046, 572);
             this.OpenFile.Name = "OpenFile";
-            this.OpenFile.Size = new System.Drawing.Size(83, 27);
+            this.OpenFile.Size = new System.Drawing.Size(124, 40);
             this.OpenFile.TabIndex = 0;
             this.OpenFile.Text = "加载文件";
             this.OpenFile.UseVisualStyleBackColor = true;
@@ -88,10 +88,9 @@
             // 
             // rtbLog
             // 
-            this.rtbLog.Location = new System.Drawing.Point(549, 31);
-            this.rtbLog.Margin = new System.Windows.Forms.Padding(2);
+            this.rtbLog.Location = new System.Drawing.Point(824, 46);
             this.rtbLog.Name = "rtbLog";
-            this.rtbLog.Size = new System.Drawing.Size(233, 167);
+            this.rtbLog.Size = new System.Drawing.Size(348, 248);
             this.rtbLog.TabIndex = 1;
             this.rtbLog.Text = "";
             // 
@@ -99,10 +98,9 @@
             // 
             this.btnSend.Enabled = false;
             this.btnSend.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnSend.Location = new System.Drawing.Point(549, 381);
-            this.btnSend.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSend.Location = new System.Drawing.Point(824, 572);
             this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(83, 27);
+            this.btnSend.Size = new System.Drawing.Size(124, 40);
             this.btnSend.TabIndex = 2;
             this.btnSend.Text = "发送";
             this.btnSend.UseVisualStyleBackColor = true;
@@ -122,20 +120,18 @@
             this.panelSetting.Controls.Add(this.label2);
             this.panelSetting.Controls.Add(this.cbxSerialName);
             this.panelSetting.Controls.Add(this.label1);
-            this.panelSetting.Location = new System.Drawing.Point(8, 8);
-            this.panelSetting.Margin = new System.Windows.Forms.Padding(2);
+            this.panelSetting.Location = new System.Drawing.Point(12, 12);
             this.panelSetting.Name = "panelSetting";
-            this.panelSetting.Size = new System.Drawing.Size(194, 228);
+            this.panelSetting.Size = new System.Drawing.Size(290, 341);
             this.panelSetting.TabIndex = 3;
             // 
             // btnSerialPort
             // 
             this.btnSerialPort.BackColor = System.Drawing.Color.Green;
             this.btnSerialPort.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnSerialPort.Location = new System.Drawing.Point(18, 188);
-            this.btnSerialPort.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSerialPort.Location = new System.Drawing.Point(27, 282);
             this.btnSerialPort.Name = "btnSerialPort";
-            this.btnSerialPort.Size = new System.Drawing.Size(158, 36);
+            this.btnSerialPort.Size = new System.Drawing.Size(237, 54);
             this.btnSerialPort.TabIndex = 4;
             this.btnSerialPort.Text = "打开串口";
             this.btnSerialPort.UseVisualStyleBackColor = false;
@@ -150,20 +146,18 @@
             "1",
             "1.5",
             "2"});
-            this.cbxStopBit.Location = new System.Drawing.Point(49, 151);
-            this.cbxStopBit.Margin = new System.Windows.Forms.Padding(2);
+            this.cbxStopBit.Location = new System.Drawing.Point(74, 226);
             this.cbxStopBit.Name = "cbxStopBit";
-            this.cbxStopBit.Size = new System.Drawing.Size(140, 28);
+            this.cbxStopBit.Size = new System.Drawing.Size(208, 36);
             this.cbxStopBit.TabIndex = 13;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label5.Location = new System.Drawing.Point(2, 155);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Location = new System.Drawing.Point(3, 232);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(44, 17);
+            this.label5.Size = new System.Drawing.Size(64, 24);
             this.label5.TabIndex = 12;
             this.label5.Text = "停止位";
             // 
@@ -176,20 +170,18 @@
             "None",
             "Odd",
             "Even"});
-            this.cbxCheckBit.Location = new System.Drawing.Point(49, 115);
-            this.cbxCheckBit.Margin = new System.Windows.Forms.Padding(2);
+            this.cbxCheckBit.Location = new System.Drawing.Point(74, 172);
             this.cbxCheckBit.Name = "cbxCheckBit";
-            this.cbxCheckBit.Size = new System.Drawing.Size(140, 28);
+            this.cbxCheckBit.Size = new System.Drawing.Size(208, 36);
             this.cbxCheckBit.TabIndex = 11;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label4.Location = new System.Drawing.Point(2, 119);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Location = new System.Drawing.Point(3, 178);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(44, 17);
+            this.label4.Size = new System.Drawing.Size(64, 24);
             this.label4.TabIndex = 10;
             this.label4.Text = "校验位";
             // 
@@ -202,20 +194,18 @@
             "8",
             "7",
             "6"});
-            this.cbxDataBit.Location = new System.Drawing.Point(49, 78);
-            this.cbxDataBit.Margin = new System.Windows.Forms.Padding(2);
+            this.cbxDataBit.Location = new System.Drawing.Point(74, 117);
             this.cbxDataBit.Name = "cbxDataBit";
-            this.cbxDataBit.Size = new System.Drawing.Size(140, 28);
+            this.cbxDataBit.Size = new System.Drawing.Size(208, 36);
             this.cbxDataBit.TabIndex = 9;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(2, 82);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Location = new System.Drawing.Point(3, 123);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(44, 17);
+            this.label3.Size = new System.Drawing.Size(64, 24);
             this.label3.TabIndex = 8;
             this.label3.Text = "数据位";
             // 
@@ -230,20 +220,18 @@
             "9600",
             "19200",
             "38400"});
-            this.cbxBaud.Location = new System.Drawing.Point(49, 42);
-            this.cbxBaud.Margin = new System.Windows.Forms.Padding(2);
+            this.cbxBaud.Location = new System.Drawing.Point(74, 63);
             this.cbxBaud.Name = "cbxBaud";
-            this.cbxBaud.Size = new System.Drawing.Size(140, 28);
+            this.cbxBaud.Size = new System.Drawing.Size(208, 36);
             this.cbxBaud.TabIndex = 7;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(2, 46);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(3, 69);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(44, 17);
+            this.label2.Size = new System.Drawing.Size(64, 24);
             this.label2.TabIndex = 6;
             this.label2.Text = "波特率";
             // 
@@ -252,29 +240,26 @@
             this.cbxSerialName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxSerialName.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cbxSerialName.FormattingEnabled = true;
-            this.cbxSerialName.Location = new System.Drawing.Point(49, 5);
-            this.cbxSerialName.Margin = new System.Windows.Forms.Padding(2);
+            this.cbxSerialName.Location = new System.Drawing.Point(74, 8);
             this.cbxSerialName.Name = "cbxSerialName";
-            this.cbxSerialName.Size = new System.Drawing.Size(140, 28);
+            this.cbxSerialName.Size = new System.Drawing.Size(208, 36);
             this.cbxSerialName.TabIndex = 5;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(2, 9);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(3, 14);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(44, 17);
+            this.label1.Size = new System.Drawing.Size(64, 24);
             this.label1.TabIndex = 4;
             this.label1.Text = "串口名";
             // 
             // rtbSend
             // 
-            this.rtbSend.Location = new System.Drawing.Point(211, 301);
-            this.rtbSend.Margin = new System.Windows.Forms.Padding(2);
+            this.rtbSend.Location = new System.Drawing.Point(316, 452);
             this.rtbSend.Name = "rtbSend";
-            this.rtbSend.Size = new System.Drawing.Size(325, 108);
+            this.rtbSend.Size = new System.Drawing.Size(486, 160);
             this.rtbSend.TabIndex = 4;
             this.rtbSend.Text = "";
             // 
@@ -282,10 +267,9 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label6.Location = new System.Drawing.Point(209, 283);
-            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label6.Location = new System.Drawing.Point(314, 424);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(44, 17);
+            this.label6.Size = new System.Drawing.Size(64, 24);
             this.label6.TabIndex = 15;
             this.label6.Text = "发送区";
             // 
@@ -296,30 +280,27 @@
             this.panel1.Controls.Add(this.btnClearRec);
             this.panel1.Controls.Add(this.rabRecHex);
             this.panel1.Controls.Add(this.rabRecAscii);
-            this.panel1.Location = new System.Drawing.Point(8, 246);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2);
+            this.panel1.Location = new System.Drawing.Point(12, 369);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(194, 79);
+            this.panel1.Size = new System.Drawing.Size(290, 118);
             this.panel1.TabIndex = 16;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label9.Location = new System.Drawing.Point(14, 14);
-            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label9.Location = new System.Drawing.Point(21, 21);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(44, 17);
+            this.label9.Size = new System.Drawing.Size(64, 24);
             this.label9.TabIndex = 14;
             this.label9.Text = "接受码";
             // 
             // btnClearRec
             // 
             this.btnClearRec.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnClearRec.Location = new System.Drawing.Point(17, 43);
-            this.btnClearRec.Margin = new System.Windows.Forms.Padding(2);
+            this.btnClearRec.Location = new System.Drawing.Point(26, 64);
             this.btnClearRec.Name = "btnClearRec";
-            this.btnClearRec.Size = new System.Drawing.Size(159, 23);
+            this.btnClearRec.Size = new System.Drawing.Size(238, 34);
             this.btnClearRec.TabIndex = 15;
             this.btnClearRec.Text = "清空接收";
             this.btnClearRec.UseVisualStyleBackColor = true;
@@ -329,10 +310,9 @@
             // 
             this.rabRecHex.AutoSize = true;
             this.rabRecHex.Checked = true;
-            this.rabRecHex.Location = new System.Drawing.Point(135, 15);
-            this.rabRecHex.Margin = new System.Windows.Forms.Padding(2);
+            this.rabRecHex.Location = new System.Drawing.Point(202, 22);
             this.rabRecHex.Name = "rabRecHex";
-            this.rabRecHex.Size = new System.Drawing.Size(41, 16);
+            this.rabRecHex.Size = new System.Drawing.Size(60, 22);
             this.rabRecHex.TabIndex = 18;
             this.rabRecHex.TabStop = true;
             this.rabRecHex.Text = "HEX";
@@ -342,10 +322,9 @@
             // rabRecAscii
             // 
             this.rabRecAscii.AutoSize = true;
-            this.rabRecAscii.Location = new System.Drawing.Point(78, 15);
-            this.rabRecAscii.Margin = new System.Windows.Forms.Padding(2);
+            this.rabRecAscii.Location = new System.Drawing.Point(117, 22);
             this.rabRecAscii.Name = "rabRecAscii";
-            this.rabRecAscii.Size = new System.Drawing.Size(53, 16);
+            this.rabRecAscii.Size = new System.Drawing.Size(78, 22);
             this.rabRecAscii.TabIndex = 17;
             this.rabRecAscii.Text = "ASCII";
             this.rabRecAscii.UseVisualStyleBackColor = true;
@@ -354,10 +333,9 @@
             // btnClearSend
             // 
             this.btnClearSend.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnClearSend.Location = new System.Drawing.Point(18, 42);
-            this.btnClearSend.Margin = new System.Windows.Forms.Padding(2);
+            this.btnClearSend.Location = new System.Drawing.Point(27, 63);
             this.btnClearSend.Name = "btnClearSend";
-            this.btnClearSend.Size = new System.Drawing.Size(158, 23);
+            this.btnClearSend.Size = new System.Drawing.Size(237, 34);
             this.btnClearSend.TabIndex = 19;
             this.btnClearSend.Text = "清空发送";
             this.btnClearSend.UseVisualStyleBackColor = true;
@@ -367,10 +345,9 @@
             // 
             this.rabSendHex.AutoSize = true;
             this.rabSendHex.Checked = true;
-            this.rabSendHex.Location = new System.Drawing.Point(135, 12);
-            this.rabSendHex.Margin = new System.Windows.Forms.Padding(2);
+            this.rabSendHex.Location = new System.Drawing.Point(202, 18);
             this.rabSendHex.Name = "rabSendHex";
-            this.rabSendHex.Size = new System.Drawing.Size(41, 16);
+            this.rabSendHex.Size = new System.Drawing.Size(60, 22);
             this.rabSendHex.TabIndex = 21;
             this.rabSendHex.TabStop = true;
             this.rabSendHex.Text = "HEX";
@@ -380,10 +357,9 @@
             // rabSendAscii
             // 
             this.rabSendAscii.AutoSize = true;
-            this.rabSendAscii.Location = new System.Drawing.Point(78, 12);
-            this.rabSendAscii.Margin = new System.Windows.Forms.Padding(2);
+            this.rabSendAscii.Location = new System.Drawing.Point(117, 18);
             this.rabSendAscii.Name = "rabSendAscii";
-            this.rabSendAscii.Size = new System.Drawing.Size(53, 16);
+            this.rabSendAscii.Size = new System.Drawing.Size(78, 22);
             this.rabSendAscii.TabIndex = 20;
             this.rabSendAscii.Text = "ASCII";
             this.rabSendAscii.UseVisualStyleBackColor = true;
@@ -396,29 +372,26 @@
             this.panel2.Controls.Add(this.rabSendHex);
             this.panel2.Controls.Add(this.btnClearSend);
             this.panel2.Controls.Add(this.rabSendAscii);
-            this.panel2.Location = new System.Drawing.Point(8, 332);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2);
+            this.panel2.Location = new System.Drawing.Point(12, 498);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(194, 77);
+            this.panel2.Size = new System.Drawing.Size(290, 114);
             this.panel2.TabIndex = 22;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label10.Location = new System.Drawing.Point(15, 12);
-            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label10.Location = new System.Drawing.Point(22, 18);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(44, 17);
+            this.label10.Size = new System.Drawing.Size(64, 24);
             this.label10.TabIndex = 19;
             this.label10.Text = "发送码";
             // 
             // rtbReceive
             // 
-            this.rtbReceive.Location = new System.Drawing.Point(211, 32);
-            this.rtbReceive.Margin = new System.Windows.Forms.Padding(2);
+            this.rtbReceive.Location = new System.Drawing.Point(316, 48);
             this.rtbReceive.Name = "rtbReceive";
-            this.rtbReceive.Size = new System.Drawing.Size(325, 246);
+            this.rtbReceive.Size = new System.Drawing.Size(486, 367);
             this.rtbReceive.TabIndex = 23;
             this.rtbReceive.Text = "";
             // 
@@ -426,10 +399,9 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label7.Location = new System.Drawing.Point(209, 13);
-            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Location = new System.Drawing.Point(314, 20);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(44, 17);
+            this.label7.Size = new System.Drawing.Size(64, 24);
             this.label7.TabIndex = 24;
             this.label7.Text = "接收区";
             // 
@@ -437,10 +409,9 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label8.Location = new System.Drawing.Point(546, 13);
-            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label8.Location = new System.Drawing.Point(819, 20);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(32, 17);
+            this.label8.Size = new System.Drawing.Size(46, 24);
             this.label8.TabIndex = 25;
             this.label8.Text = "日志";
             // 
@@ -453,10 +424,9 @@
             this.colStatus});
             this.listMusicView.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.listMusicView.GridLines = true;
-            this.listMusicView.Location = new System.Drawing.Point(549, 213);
-            this.listMusicView.Margin = new System.Windows.Forms.Padding(2);
+            this.listMusicView.Location = new System.Drawing.Point(824, 320);
             this.listMusicView.Name = "listMusicView";
-            this.listMusicView.Size = new System.Drawing.Size(233, 159);
+            this.listMusicView.Size = new System.Drawing.Size(348, 236);
             this.listMusicView.TabIndex = 26;
             this.listMusicView.UseCompatibleStateImageBehavior = false;
             this.listMusicView.View = System.Windows.Forms.View.Details;
@@ -487,24 +457,24 @@
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLabel1});
-            this.statusStrip.Location = new System.Drawing.Point(0, 422);
+            this.statusStrip.Location = new System.Drawing.Point(0, 637);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 9, 0);
-            this.statusStrip.Size = new System.Drawing.Size(789, 22);
+            this.statusStrip.Padding = new System.Windows.Forms.Padding(2, 0, 14, 0);
+            this.statusStrip.Size = new System.Drawing.Size(1184, 29);
             this.statusStrip.TabIndex = 27;
             this.statusStrip.Text = "statusStrip1";
             // 
             // statusLabel1
             // 
             this.statusLabel1.Name = "statusLabel1";
-            this.statusLabel1.Size = new System.Drawing.Size(131, 17);
+            this.statusLabel1.Size = new System.Drawing.Size(195, 24);
             this.statusLabel1.Text = "toolStripStatusLabel1";
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(789, 444);
+            this.ClientSize = new System.Drawing.Size(1184, 666);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.listMusicView);
             this.Controls.Add(this.label8);
@@ -518,7 +488,7 @@
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.rtbLog);
             this.Controls.Add(this.OpenFile);
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "MidiEncoder";
             this.Load += new System.EventHandler(this.MainForm_Load);

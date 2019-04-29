@@ -30,16 +30,16 @@ namespace MidiEncoder {
         //获取频率计数初值
         public int getFrequencyCN() {
             double T_us = 12 / 11.0592;
-            int countNum = (int)(65536 - (10 ^ 6) / (2 * this.NoteFrequency * T_us));
+            double D_s = 1 / this.NoteFrequency / 2;
+            int countNum = (int)(65536 - (1e6) * D_s / T_us);
             return countNum;
         }
 
         //获取长度计数初值
-        public int getLengthCN(Music music) {
-            int count = 100;
-            double T_us = 12 / 11.0592;
-            double D_us = music.AveInterval / music.AveNoteLength * 4 * this.NoteLength * (10^3);
-            int countNum = (int)(65536 - D_us / T_us / count);
+        public int getLengthCN() {
+            double T_s = 1 / this.NoteFrequency / 2;
+            double D_ms = 7 * this.NoteLength;
+            int countNum = (int)(1e-3 * D_ms / T_s );
             return countNum;
         }
     }

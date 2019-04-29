@@ -14,8 +14,10 @@ namespace MidiEncoder {
         private List<Music> MusicList = new List<Music>();
         //串口
         private SerialPort comm = new SerialPort();
-        //接收到的字符
-        private StringBuilder Builder = new StringBuilder();
+        //接收的字符
+        private StringBuilder recBuilder = new StringBuilder();
+        //发送的字符
+        private StringBuilder sendBuilder = new StringBuilder();
         //ASCII码接收
         private bool isRecAsciiMode = false;
         //ACSII码发送
@@ -182,7 +184,7 @@ namespace MidiEncoder {
                 comm.NewLine = "\r\n";
                 comm.RtsEnable = true;
                 //注册对串口接收数据的响应方法
-                comm.DataReceived += new SerialDataReceivedEventHandler(comm_DataReceived);
+                comm.DataReceived += new SerialDataReceivedEventHandler(commDataReceived);
                 statusLabel1.Text = "获取串口信息成功";
             } catch (Exception) {
                 statusLabel1.Text = "无法获取可用串口信息";
@@ -201,8 +203,13 @@ namespace MidiEncoder {
                 this.comm.Close();
                 this.btnSerialPort.BackColor = Color.Green;
             } else {
-                //串口名
-                comm.PortName = this.cbxSerialName.Text;
+                if(cbxSerialName.Text != "") {
+                    //串口名
+                    comm.PortName = this.cbxSerialName.Text;
+                } else {
+                    statusLabel1.Text = "串口为空";
+                    return;
+                }
                 //串口波特率
                 comm.BaudRate = int.Parse(this.cbxBaud.Text);
                 //奇偶校验位
@@ -249,19 +256,20 @@ namespace MidiEncoder {
 
         //串口发送
         private void BtnSend_Click(object sender, EventArgs e) {
-            foreach(Music music in MusicList) {
-                foreach(Note note in music.NoteList) {
-                    if(note.NoteLength != 0) {
-                        int Frequency = (int)note.NoteFrequency;
-                        double Duration = music.AveInterval / music.AveNoteLength * 4 * note.NoteLength;
-                        Console.Beep(Frequency, (int)Math.Ceiling(Duration));
-                    }
-                }
-            }
+            //foreach(Music music in MusicList) {
+            //    foreach(Note note in music.NoteList) {
+            //        if(note.NoteLength != 0) {
+            //            int Frequency = (int)note.NoteFrequency;
+            //            double Duration = music.AveInterval / music.AveNoteLength * 4 * note.NoteLength;
+            //            Console.Beep(Frequency, (int)Math.Ceiling(Duration));
+            //        }
+            //    }
+            //}
+            sendMusicNotes(3);
         }
 
         //串口接收
-        void comm_DataReceived(object sender, SerialDataReceivedEventArgs e) {
+        void commDataReceived(object sender, SerialDataReceivedEventArgs e) {
             //获取接收缓冲区中数据的字节数
             int n = comm.BytesToRead;
             byte[] buf = new byte[n];
@@ -269,27 +277,116 @@ namespace MidiEncoder {
             //将数据读入buf数组中
             comm.Read(buf, 0, n);
 
+            //处理单片机请求
+            foreach(byte command in buf) {
+                handleMcsRequests(command);
+            }
             //先清空
-            Builder.Clear();
+            recBuilder.Clear();
 
             //因为要访问ui资源，所以需要使用invoke方式同步ui
             this.Invoke((EventHandler)(delegate {
                 //委托方法在rtbReceive控件中显示接收到的字符
                 if (isRecAsciiMode) {
-                    Builder.Append(Encoding.ASCII.GetString(buf));
+                    recBuilder.Append(Encoding.ASCII.GetString(buf));
                 } else {
-                    Builder.Append(byteToHexStr(buf));
+                    recBuilder.Append(byteToHexStr(buf));
                 }
                 
-                this.rtbReceive.AppendText(Builder.ToString());
+                this.rtbReceive.AppendText(recBuilder.ToString());
             }));
         }
 
         //发送乐谱信息
         void sendMusicNotes(int musicIndex) {
-            foreach(Note note in MusicList[musicIndex - 1].NoteList) {
-                int NoteFrequencyCN = note.getFrequencyCN();
-                int NoteLengthCNCN = note.getLengthCN(MusicList[musicIndex - 1]);
+            try {
+                //清空发送缓冲区
+                comm.DiscardOutBuffer();
+                //清空发送Builder
+                sendBuilder.Clear();
+                if (musicIndex > MusicList.Count()) {
+                    this.Invoke((EventHandler)(delegate {
+                        rtbLog.AppendText("串口发送失败！\n索引超出长度\n");
+                    }));
+                    return;
+                }
+                this.Invoke((EventHandler)(delegate {
+                    rtbLog.AppendText("客户端请求 " + MusicList[musicIndex - 1].MusicName + " 音乐信息\n");
+                }));
+                foreach (Note note in MusicList[musicIndex - 1].NoteList) {
+                    //获取计数值转换为bytes发送
+                    int NoteFrequencyCN = note.getFrequencyCN();
+                    int NoteLengthCN = note.getLengthCN();
+                    byte[] NoteFrequencyBytes = BitConverter.GetBytes(NoteFrequencyCN).Skip(0).Take(2).ToArray();
+                    byte[] NoteLengthBytes = BitConverter.GetBytes(NoteLengthCN).Skip(0).Take(2).ToArray();
+                    //将音符的频率计数初值和长度控制计数初值写入串口发送缓冲区
+                    comm.Write(NoteFrequencyBytes, 0, 2);
+                    comm.Write(NoteLengthBytes, 0, 2);
+                    //判断发送模式
+                    if (isSendAsciiMode) {
+                        sendBuilder.Append(Encoding.ASCII.GetString(NoteFrequencyBytes));
+                        sendBuilder.Append(Encoding.ASCII.GetString(NoteLengthBytes));
+                    } else {
+                        sendBuilder.Append(byteToHexStr(NoteFrequencyBytes));
+                        sendBuilder.Append(byteToHexStr(NoteLengthBytes));
+                    }
+                }
+                //更新UI显示
+                //因为要访问ui资源，所以需要使用invoke方式同步ui
+                this.Invoke((EventHandler)(delegate {
+                    //委托方法在rtbSend控件中显示发送的字符
+                    this.rtbSend.AppendText(sendBuilder.ToString());
+                    rtbLog.AppendText("发送 " + MusicList[musicIndex - 1].MusicName + " 乐谱成功\n");
+                }));
+            } catch(Exception ex) {
+                this.Invoke((EventHandler)(delegate {
+                    rtbLog.AppendText("串口发送失败！\n" + ex.ToString());
+                }));
+            }
+        }
+
+        //发送音乐列表
+        void sendMusicList() {
+            try {
+                //清空发送缓冲区
+                comm.DiscardOutBuffer();
+                //清空发送Builder
+                sendBuilder.Clear();
+                //先写入歌曲的数量，最大为8首，1字节数据
+                int MusicNum = Math.Min(MusicList.Count(), 8);
+                byte[] MusicNumBytes = BitConverter.GetBytes(MusicNum).Skip(0).Take(1).ToArray();
+                //以一个byte发送歌曲数量
+                comm.Write(MusicNumBytes, 0, 1);
+                //判断发送模式
+                if (isSendAsciiMode) {
+                    sendBuilder.Append(Encoding.ASCII.GetString(MusicNumBytes));
+                } else {
+                    sendBuilder.Append(byteToHexStr(MusicNumBytes));
+                }
+                //写入MusicNum首歌曲名称信息
+                for (int i = 0; i < MusicNum; i++) {
+                    string MusicName = MusicList[i].MusicName.Split('.')[0];
+                    byte[] MusicNameBytes = Encoding.Unicode.GetBytes(MusicName);
+                    //已两字节的Unicode编码发送歌曲名
+                    comm.Write(MusicNameBytes, 0, MusicNameBytes.Length);
+                    //判断发送模式
+                    if (isSendAsciiMode) {
+                        sendBuilder.Append(Encoding.Unicode.GetString(MusicNameBytes));
+                    } else {
+                        sendBuilder.Append(byteToHexStr(MusicNameBytes));
+                    }
+                }
+                //更新UI显示
+                //因为要访问ui资源，所以需要使用invoke方式同步ui
+                //委托方法在rtbSend控件中显示发送的字符
+                this.Invoke((EventHandler)(delegate {
+                    rtbSend.AppendText(sendBuilder.ToString());
+                    rtbLog.AppendText("音乐列表已写入串口发送缓冲区，共" + MusicNum.ToString() + "首\n");
+                }));
+            }catch(Exception ex) {
+                this.Invoke((EventHandler)(delegate {
+                    rtbLog.AppendText("串口发送失败！\n" + ex.ToString());
+                }));
             }
         }
 
@@ -297,11 +394,16 @@ namespace MidiEncoder {
         void handleMcsRequests(byte command) {
             if(command == 0x00) {
                 //刷新列表
+                this.Invoke((EventHandler)(delegate {
+                    rtbLog.AppendText("客户端请求音乐列表\n");
+                }));
+                sendMusicList();
             } else if (command >= 0x01 && command <= 0x08) {
-                byte[] byteArray = new byte[1];
+                byte[] byteArray = new byte[4];
                 byteArray[0] = command;
                 //播放对应歌曲
                 int musicIndex = System.BitConverter.ToInt32(byteArray, 0);
+                //发送第musicIndex号音符列表
                 sendMusicNotes(musicIndex);
             }
         }
