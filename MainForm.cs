@@ -352,9 +352,9 @@ namespace MidiEncoder {
                 comm.DiscardOutBuffer();
                 //清空发送Builder
                 sendBuilder.Clear();
-                //先写入歌曲的数量，最大为8首，1字节数据
+                //先写入歌曲的数量，最大为8首，1字节数据，每个歌曲名占用8个byte
                 int MusicNum = Math.Min(MusicList.Count(), 8);
-                byte[] MusicNumBytes = BitConverter.GetBytes(MusicNum).Skip(0).Take(1).ToArray();
+                byte[] MusicNumBytes = BitConverter.GetBytes(MusicNum * 8).Skip(0).Take(1).ToArray();
                 //以一个byte发送歌曲数量
                 comm.Write(MusicNumBytes, 0, 1);
                 //判断发送模式
@@ -365,8 +365,30 @@ namespace MidiEncoder {
                 }
                 //写入MusicNum首歌曲名称信息
                 for (int i = 0; i < MusicNum; i++) {
+                    List<byte> ByteList = new List<byte>();
+                    byte[] MusicIndex = Encoding.ASCII.GetBytes((i + 1).ToString() + ".");
                     string MusicName = MusicList[i].MusicName.Split('.')[0];
                     byte[] MusicNameBytes = Encoding.Unicode.GetBytes(MusicName);
+                    ByteList.AddRange(MusicIndex);
+                    ByteList.AddRange(MusicNameBytes);
+                    List<byte> NewByteList = new List<byte>();
+                    //将Unicode重新编码为ANSI，虽然会有BUG，凑合用了
+                    foreach(byte ch in ByteList) {
+                        if(ch != 0x00) {
+                            NewByteList.Add(ch);
+                        }
+                    }
+                    ByteList = NewByteList;
+                    //补充空格或者截取长度，保证都为8byte
+                    if (ByteList.Count() < 8) {
+                        string Spaces = "";
+                        for (int j = 0; j < (8 - ByteList.Count()); j ++) Spaces += " ";
+                        byte[] AddSpace = Encoding.ASCII.GetBytes(Spaces);
+                        ByteList.AddRange(AddSpace);
+                    }else if(ByteList.Count() > 8) {
+                        ByteList = ByteList.GetRange(0, 8);
+                    }
+                    MusicNameBytes = ByteList.ToArray();
                     //已两字节的Unicode编码发送歌曲名
                     comm.Write(MusicNameBytes, 0, MusicNameBytes.Length);
                     //判断发送模式
