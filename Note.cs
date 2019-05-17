@@ -36,10 +36,10 @@ namespace MidiEncoder {
         }
 
         //获取长度计数初值
-        public int getLengthCN() {
+        public int getLengthCN(Music music) {
             double T_s = 1 / this.NoteFrequency / 2;
-            double D_ms = 7 * this.NoteLength;
-            int countNum = (int)(1e-3 * D_ms / T_s );
+            double D_s = (double)this.NoteLength / music.MusicTicks;
+            int countNum = (int)(D_s / T_s);
             return countNum;
         }
     }

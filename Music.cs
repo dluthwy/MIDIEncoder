@@ -16,5 +16,8 @@ namespace MidiEncoder {
         public double AveInterval;
 
         public double AveNoteLength;
+
+        //Midi Ticks
+        public long MusicTicks;
     }
 }

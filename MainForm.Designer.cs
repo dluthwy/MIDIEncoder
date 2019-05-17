@@ -96,13 +96,12 @@
             // 
             // btnSend
             // 
-            this.btnSend.Enabled = false;
             this.btnSend.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnSend.Location = new System.Drawing.Point(824, 572);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(124, 40);
             this.btnSend.TabIndex = 2;
-            this.btnSend.Text = "发送";
+            this.btnSend.Text = "播放";
             this.btnSend.UseVisualStyleBackColor = true;
             this.btnSend.Click += new System.EventHandler(this.BtnSend_Click);
             // 
@@ -488,7 +487,9 @@
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.rtbLog);
             this.Controls.Add(this.OpenFile);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "MidiEncoder";
             this.Load += new System.EventHandler(this.MainForm_Load);
