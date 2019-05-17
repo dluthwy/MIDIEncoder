@@ -318,10 +318,10 @@ namespace MidiEncoder {
                     rtbLog.AppendText("客户端请求 " + MusicList[musicIndex - 1].MusicName + " 音乐信息\n");
                 }));
                 //发送正在播放音乐名称
-                string PlayMusicNames = "播放中: " + MusicList[musicIndex - 1].MusicName.Split('.')[0] + "        ";
-                byte[] PlayMusicNameBytes = Encoding.GetEncoding("gb2312").GetBytes(PlayMusicNames);
+                //string PlayMusicNames = "播放中: " + MusicList[musicIndex - 1].MusicName.Split('.')[0] + "        ";
+                //byte[] PlayMusicNameBytes = Encoding.GetEncoding("gb2312").GetBytes(PlayMusicNames);
                 //写入缓冲区
-                comm.Write(PlayMusicNameBytes, 0, 16);
+                //comm.Write(PlayMusicNameBytes, 0, 16);
                 foreach (Note note in MusicList[musicIndex - 1].NoteList) {
                     //获取计数值转换为bytes发送
                     int NoteFrequencyCN = note.getFrequencyCN();
@@ -345,57 +345,42 @@ namespace MidiEncoder {
         }
 
         //发送音乐列表
-        void sendMusicList() {
+        void sendMusicList(int musicPage) {
             try {
                 //清空发送缓冲区
                 comm.DiscardOutBuffer();
                 //清空发送Builder
                 sendBuilder.Clear();
-                //歌曲的数量，最大为8首，每个歌曲名占用8个byte
-                int MusicNum = Math.Min(MusicList.Count(), 8);
-                //byte[] MusicNumBytes = BitConverter.GetBytes(MusicNum * 8).Skip(0).Take(1).ToArray();
-                ////以一个byte发送歌曲数量
-                //comm.Write(MusicNumBytes, 0, 1);
-                ////判断发送模式
-                //if (isSendAsciiMode) {
-                //    sendBuilder.Append(Encoding.ASCII.GetString(MusicNumBytes));
-                //} else {
-                //    sendBuilder.Append(byteToHexStr(MusicNumBytes));
-                //}
+                //歌曲的数量，最大为3首，每个歌曲名占用14个byte
+                int MusicNum = Math.Min(MusicList.Count(), 3);
+                int MusicNameLength = 14;
                 //写入MusicNum首歌曲名称信息
                 List<byte> SendMusicName = new List<byte>();
                 for (int i = 0; i < MusicNum; i++) {
                     List<byte> ByteList = new List<byte>();
                     byte[] MusicIndex = Encoding.ASCII.GetBytes((i + 1).ToString() + ".");
-                    string MusicName = MusicList[i].MusicName.Split('.')[0];
+                    string MusicName = MusicList[3 * (musicPage-1) + i].MusicName.Split('.')[0];
                     byte[] MusicNameBytes = Encoding.GetEncoding("gb2312").GetBytes(MusicName);
                     ByteList.AddRange(MusicIndex);
                     ByteList.AddRange(MusicNameBytes);
-                    //补充空格或者截取长度，保证都为8byte
-                    if (ByteList.Count() < 8) {
+                    //补充空格或者截取长度，保证都为 14 byte
+                    if (ByteList.Count() < MusicNameLength) {
                         string Spaces = "";
-                        for (int j = 0; j < (8 - ByteList.Count()); j ++) Spaces += " ";
+                        for (int j = 0; j < (MusicNameLength - ByteList.Count()); j ++) Spaces += " ";
                         byte[] AddSpace = Encoding.ASCII.GetBytes(Spaces);
                         ByteList.AddRange(AddSpace);
-                    }else if(ByteList.Count() > 8) {
-                        ByteList = ByteList.GetRange(0, 8);
+                    }else if(ByteList.Count() > MusicNameLength) {
+                        ByteList = ByteList.GetRange(0, MusicNameLength);
                     }
                     //添加到发送列表中
                     SendMusicName.AddRange(ByteList);
                 }
                 string AddText = "";
-                for(int i = 0;i < 64 - SendMusicName.Count();i ++) {
+                for(int i = 0;i < 3 * MusicNameLength - SendMusicName.Count();i ++) {
                     AddText += " ";
                 }
                 byte[] AddTextByte = Encoding.ASCII.GetBytes(AddText);
                 SendMusicName.AddRange(AddTextByte);
-                //交换2，3行位置，12864硬件原因
-                for(int i = 16;i < 16 * 2;i++) {
-                    byte temp = new byte();
-                    temp = SendMusicName[i];
-                    SendMusicName[i] = SendMusicName[i + 16];
-                    SendMusicName[i + 16] = temp;
-                }
                 //写入发送缓冲区
                 comm.Write(SendMusicName.ToArray(), 0, SendMusicName.Count());
                 //判断发送模式
@@ -420,20 +405,33 @@ namespace MidiEncoder {
 
         //处理单片机请求事件
         void handleMcsRequests(byte command) {
-            if(command == 0x00) {
-                //刷新列表
+            //初始化请求
+            if (command == 0x00) {
+                //清空发送缓冲区
+                comm.DiscardOutBuffer();
+                //清空发送Builder
+                sendBuilder.Clear();
+                int maxMusicListPage = (int)Math.Ceiling(MusicList.Count() / 3.0);
+                byte[] MaxMusicPageBytes = BitConverter.GetBytes(maxMusicListPage).Skip(0).Take(1).ToArray();
+                this.comm.Write(MaxMusicPageBytes, 0, 1);
+                //判断发送模式
+                if (isSendAsciiMode) {
+                    sendBuilder.Append(Encoding.ASCII.GetString(MaxMusicPageBytes));
+                } else {
+                    sendBuilder.Append(byteToHexStr(MaxMusicPageBytes));
+                }
                 this.Invoke((EventHandler)(delegate {
-                    rtbLog.AppendText("客户端请求音乐列表\n");
+                    rtbLog.AppendText("客户端请求音乐列表最大页数\n");
+                    rtbLog.AppendText("最大页面数：MaxPages = " + maxMusicListPage.ToString() + "\n");
+                    rtbSend.AppendText(sendBuilder.ToString());
                 }));
-                //发送音乐列表
-                sendMusicList();
             // 按序号发送音乐列表
             } else if (command >= 0x0F1 && command <= 0x0FA) {
                 byte[] byteArray = new byte[4];
                 byteArray[0] = (byte)(command & 0x0F);
                 //播放对应歌曲
                 int musicIndex = BitConverter.ToInt32(byteArray, 0);
-                //发送第musicIndex号音符列表
+                //发送第musicIndex音符列表
                 sendMusicNotes(musicIndex);
             // 按光标位置发送音乐列表
             // 高位为音乐列表页数，低位为音乐序号
@@ -442,8 +440,19 @@ namespace MidiEncoder {
                 byte[] indexArray = new byte[4];
                 pageArray[0] = (byte)(command & 0xF0);
                 indexArray[0] = (byte)(command & 0x0F);
-                int musicIndex = BitConverter.ToInt32(pageArray, 0) * 3 + BitConverter.ToInt32(indexArray, 0);
-             } else if (command == 0xcc){
+                // 页数 * 3 + 每页的index = musicIndex
+                int musicIndex = BitConverter.ToInt32(pageArray, 0) >> 4 * 3 + BitConverter.ToInt32(indexArray, 0);
+                //发送第musicIndex音符列表
+                sendMusicNotes(musicIndex);
+            // 发送当页音乐列表
+            // 高位为 E， 低位为音乐列表
+            }else if (command >= 0xE1 && command <= 0xEF) {
+                byte[] pageArray = new byte[4];
+                pageArray[0] = (byte)(command & 0x0F);
+                int musicPage = BitConverter.ToInt32(pageArray, 0);
+                //发送音乐列表
+                sendMusicList(musicPage);
+            } else if (command == 0xcc){
                 //清空发送Builder
                 sendBuilder.Clear();
                 //清空发送缓冲区
